@@ -1,3 +1,4 @@
+
 const port = process.env.PORT
 const io = require('socket.io')(port, { //8123 is the local port we are binding the demo server to
   pingInterval: 30005,		//An interval how often a ping is sent
@@ -11,6 +12,7 @@ const io = require('socket.io')(port, { //8123 is the local port we are binding 
     origin: "*"				//Allow connection from any referrer (most likely this is what you will want for game clients - for WebGL the domain of your sebsite MIGHT also work)
   }
 });
+
 
 console.log('Starting Socket.IO pingpong server');
 
@@ -37,7 +39,7 @@ function sleep(ms) {
 console.log('Starting Socket.IO demo server');
 
 io.on('connection', (socket) => {
-	console.log('[' + (new Date()).toUTCString() + '] game connecting');
+	console.log('[' + (new Date()).toUTCString() + '] game connected');
 
     socket.on('unique_code', async (data) => {
 		    const unique_code = data;
