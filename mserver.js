@@ -19,24 +19,9 @@ initializeApp({
 });
 
 
-const docRef = db.collection('users').doc('alovelace');
 
-async function connectToFirebase(){
-    var db = await getFirestore();
-    return db;
-}
 
-async function start() { 
-    const result = await docRef.set({
-        first: 'Ada',
-        last: 'Lovelace',
-        born: 1815
-      });
- }
 
- async function sendData(doc,data){
-
- }
 
 console.log('Starting Socket.IO demo server');
 
