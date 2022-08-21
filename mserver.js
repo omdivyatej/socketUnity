@@ -42,13 +42,19 @@ io.on("connection", (socket) => {
 
     socket.on("Game_Session_Data", async (payload) => {
       console.log("current payload context is " + unique_code);
-      console.log(payload);
-      console.log(typeof payload);
-      var val = [];      
-      val.push(payload);
+      //console.log(payload);
+      //console.log(typeof payload);
+      //let jsonObject = { one: "value1", two: "value2", three: "value3" };
+      var jsonObject=payload;
+      var map = {};
+      for (var value in jsonObject) {
+        map.set(value, jsonObject[value]);
+      }
+      // var val = [];
+      // val.push(payload);
       await userCollection
         .doc(unique_code.toString())
-        .update({ t: FieldValue.arrayUnion(val) });
+        .update({ t: FieldValue.arrayUnion(map) });
       await userCollection.doc(unique_code.toString()).set(payload);
     });
   });
