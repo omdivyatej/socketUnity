@@ -44,7 +44,8 @@ io.on('connection',(socket) => {
     console.log("Game Connected");    
     socket.on('unique_code',async (data) => {
         const unique_code=data;
-        console.log("Unique code is "+unique_code)
+        console.log("Hello")
+        console.log("Unique code is " + unique_code)
         const docRef = db.collection('users').doc(unique_code);
         
        
