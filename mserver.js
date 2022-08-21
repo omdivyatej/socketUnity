@@ -44,7 +44,8 @@ io.on("connection", (socket) => {
       console.log("current payload context is " + unique_code);
       //console.log(payload);
       //console.log(typeof payload);
-      var payload = JSON.parse(payload2);
+      var string1 = JSON.stringify(payload2);
+      var payload = JSON.parse(string1);
       // var payload1={ calories: 45, score: 34, time: 3221, coins: 66 }
       // const result = Object.entries(payload1);
       data={
