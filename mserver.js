@@ -39,6 +39,7 @@ io.on('connection',(socket) => {
           console.log("current payload context is " + unique_code)
             console.log(payload);
             console.log(typeof payload);
+            await userCollection.doc(unique_code.toString()).update({"t":FieldValue.arrayUnion[payload]})
             await userCollection.doc(unique_code.toString()).set(payload)
         })
     
