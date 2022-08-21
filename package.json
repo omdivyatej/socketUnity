@@ -1,0 +1,12 @@
+{
+  "name": "SIO-v4-example-server",
+  "version": "1.0.0",
+  "description": "Example server for Unity Socket.IO v3/v4 Asset",
+  "author": "Firesplash Entertainment <support@firesplash.de>",
+  "main": "server.js",
+  "dependencies": {
+    "json": "^11.0.0",
+    "mysql": "^2.18.1",
+    "socket.io": "4.1.2"
+  }
+}
