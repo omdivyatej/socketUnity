@@ -44,18 +44,39 @@ io.on("connection", (socket) => {
       console.log("current payload context is " + unique_code);
       //console.log(payload);
       //console.log(typeof payload);
-      //let jsonObject = { one: "value1", two: "value2", three: "value3" };
-      var jsonObject=payload;
-      var map = {};
-      for (var value in jsonObject) {
-        map.set(value, jsonObject[value]);
-      }
-      // var val = [];
-      // val.push(payload);
+      const result = Object.entries(payload);
+
+      console.log( result)
       await userCollection
         .doc(unique_code.toString())
-        .update({ t: FieldValue.arrayUnion(map) });
+        .update({ t: FieldValue.arrayUnion(result) });
       await userCollection.doc(unique_code.toString()).set(payload);
     });
   });
 });
+
+// var payload1={ calories: 45, score: 34, time: 3221, coins: 66 }
+// console.log(JSON.parse(payload1))
+// var k = new Map(JSON.parse(JSON.stringify(payload1)))
+// console.log(k)
+// var map = {};
+//       for (var value in payload1) {
+//         map.(value, payload1[value]);
+//       }
+// print(map)
+// const map = new Map([
+//   ['name', 'Tom'],
+//   ['country', 'Chile'],
+// ]);
+
+// // ✅ Convert to JSON string
+// const json = JSON.stringify(Object.fromEntries(map));
+
+// // 👇️ '{"name": "Tom", "country": "Chile"}'
+// console.log(json);
+
+// let jsonObject = { one: "value1", "two": "value2", "three": "value3" };  
+
+// const result = Object.entries(jsonObject);
+
+// console.log( result)
