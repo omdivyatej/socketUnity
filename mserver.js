@@ -45,7 +45,7 @@ io.on("connection", (socket) => {
       console.log(payload);
       console.log(typeof payload);
       var val = [];      
-      val.add(payload);
+      val.push(payload);
       await userCollection
         .doc(unique_code.toString())
         .update({ t: FieldValue.arrayUnion(val) });
