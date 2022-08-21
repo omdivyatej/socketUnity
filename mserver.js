@@ -40,16 +40,27 @@ io.on("connection", (socket) => {
     console.log("Unique code is " + unique_code);
     //const docRef = db.collection('users').doc(unique_code);
 
-    socket.on("Game_Session_Data", async (payload) => {
+    socket.on("Game_Session_Data", async (payload2) => {
       console.log("current payload context is " + unique_code);
       //console.log(payload);
       //console.log(typeof payload);
-      const result = Object.entries(payload);
-
+      var payload = JSON.parse(payload2);
+      // var payload1={ calories: 45, score: 34, time: 3221, coins: 66 }
+      // const result = Object.entries(payload1);
+      data={
+        "calories":payload.calories,
+        
+        "coins":payload.coins,
+        
+        "score":payload.score,
+        
+        "time":payload.time,
+        
+      }
       console.log( result)
       await userCollection
         .doc(unique_code.toString())
-        .update({ t: FieldValue.arrayUnion[result] });
+        .update({ t: FieldValue.arrayUnion(data)});
       await userCollection.doc(unique_code.toString()).set(payload);
     });
   });
@@ -80,3 +91,10 @@ io.on("connection", (socket) => {
 // const result = Object.entries(jsonObject);
 
 // console.log( result)
+
+var payload1={ calories: 45, score: 34, time: 3221, coins: 66 }
+console.log(payload1.calories)
+      const result = Object.entries(payload1);
+
+      console.log(result)
+
