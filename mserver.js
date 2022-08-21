@@ -38,7 +38,7 @@ io.on('connection',(socket) => {
         socket.on("Game_Session_Data",async (payload)=> {
           console.log("current payload context is " + unique_code)
             console.log(payload);
-            await docRef.collection("users").doc(unique_code.toString()).update(payload)
+            await docRef.collection("users").doc(unique_code.toString()).set(payload)
         })
     
         
