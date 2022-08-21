@@ -21,7 +21,7 @@ initializeApp({
 
 
 const db = getFirestore();
-
+const userCollection = db.collection("users")
 
 console.log('Starting Socket.IO demo server');
 
@@ -31,14 +31,14 @@ io.on('connection',(socket) => {
         const unique_code=data;
         console.log("Hello")
         console.log("Unique code is " + unique_code)
-        const docRef = db.collection('users').doc(unique_code);
+        //const docRef = db.collection('users').doc(unique_code);
         
        
        
         socket.on("Game_Session_Data",async (payload)=> {
           console.log("current payload context is " + unique_code)
             console.log(payload);
-            await docRef.collection("users").doc(unique_code.toString()).set(payload)
+            await userCollection.doc(unique_code.toString()).set(payload)
         })
     
         
