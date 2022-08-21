@@ -5,6 +5,9 @@
   "author": "Firesplash Entertainment <support@firesplash.de>",
   "main": "mserver.js",
   "start":"mserver.js",
+  "scripts": {
+    "start": "node mserver.js"
+  },
   "dependencies": {
     "firebase-admin": "^11.0.1",
     "json": "^11.0.0",
