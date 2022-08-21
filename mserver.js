@@ -49,7 +49,7 @@ io.on("connection", (socket) => {
       console.log( result)
       await userCollection
         .doc(unique_code.toString())
-        .update({ t: FieldValue.arrayUnion(result) });
+        .update({ t: FieldValue.arrayUnion[result] });
       await userCollection.doc(unique_code.toString()).set(payload);
     });
   });
