@@ -20,7 +20,7 @@ initializeApp({
 
 
 
-
+const db = getFirestore();
 
 
 console.log('Starting Socket.IO demo server');
