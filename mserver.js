@@ -42,30 +42,30 @@ io.on("connection", (socket) => {
 
     socket.on("Game_Session_Data", async (payload2) => {
       console.log("current payload context is " + unique_code);      
-      console.log(payload2)
+      
       var string1 = JSON.stringify(payload2);
       var payload = JSON.parse(string1);      
       console.log("Following perfect json:")
-      console.log(payload)
-      // data={
-      //   "calories":payload.calories,
+      console.log(payload)    
+      data={
+        "calories":payload.calories,
         
-      //   "coins":payload.coins,
+        "coins":payload.coins,
         
-      //   "score":payload.score,
+        "score":payload.score,
         
-      //   "time":payload.time, 
-               
-      // }
-      // console.log( result)
-      // await userCollection
-      //   .doc(unique_code.toString())
-      //   .update({ t: FieldValue.arrayUnion(data)});
+        "time":payload.time, 
+        "dateTime": payload.dateTime               
+      }
+     console.log( result)
+     await userCollection
+       .doc(unique_code.toString())
+       .update({ t: FieldValue.arrayUnion(data)});
       //await userCollection.doc(unique_code.toString()).set(payload);
     });
-    // socket.on("isEveryday",async (data)=>{
-    //   await userCollection.doc(unique_code).ge
-    // });
+  //  socket.on("isEveryday",async (data)=>{
+  //    await userCollection.doc(unique_code).ge
+  //  });
   });
 });
 
@@ -93,9 +93,29 @@ async function getData(){
  console.log(l)
 }
 //getData();
-let time = {
-  seconds:  1661414937,
-  nanoseconds: 383000000, 
-}
+// let time = {
+//   seconds:  1661414937,
+//   nanoseconds: 383000000, 
+// }
+
+// workFrom = "11:40";
+// time = new Date("1/02/1970" + " " + workFrom);
+// console.log(time.getMonth())
+// console.log(time.getDate() +'/'+ time.getMonth() +'/'+ time.getFullYear()+ ' '+ time.getHours() + ':' + time.getMinutes());
 
 
+var dT=  '08-22-2022 15:15:44'
+var dt2= '08-23-2022 15:15:44'
+//get the session_array
+//if session_arr.lenght=2, empty it and set the new session_arr,,, else just set it
+//get the session_array
+//['08-22-2022 15:15:44','08-23-2022 17:18:49']
+//check everyday: loop through and convert each to Date format
+///var diff = Math.abs(new Date() - compareDate);
+//subtract 
+// time= new Date(dT)
+// time1=new Date(dt2)
+// var dif = Math.abs(time-time1)
+// console.log(dif/ 3600000)
+
+//console.log(time.getDate() +'/'+ time.getMonth() +'/'+ time.getFullYear()+ ' '+ time.getHours() + ':' + time.getMinutes());
