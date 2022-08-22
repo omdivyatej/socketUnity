@@ -57,7 +57,7 @@ io.on("connection", (socket) => {
         "time":payload.time, 
         "dateTime": payload.dateTime               
       }
-     console.log( result)
+    
      await userCollection
        .doc(unique_code.toString())
        .update({ t: FieldValue.arrayUnion(data)});
