@@ -44,6 +44,7 @@ io.on("connection", (socket) => {
       console.log("current payload context is " + unique_code);      
       var string1 = JSON.stringify(payload2);
       var payload = JSON.parse(string1);      
+      console.log("Following perfect json:")
       console.log(payload)
       // data={
       //   "calories":payload.calories,
