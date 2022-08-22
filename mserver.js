@@ -76,18 +76,11 @@ io.on("connection", (socket) => {
       console.log(l);
       var dT = "08-27-2022 15:15:44";
       var dt2 = "08-28-2022 15:15:44";
-      if (l.length == 2) {
-        await userCollection
-          .doc("rZ7xk6kWgXcSjtFZ5BVr401bEQr2")
-          .update({ sessions: FieldValue.arrayRemove(l[0], l[1]) });
-        await userCollection
-          .doc("rZ7xk6kWgXcSjtFZ5BVr401bEQr2")
-          .update({ sessions: FieldValue.arrayUnion(dateTimeString) });
-      } else {
-        await userCollection
-          .doc("rZ7xk6kWgXcSjtFZ5BVr401bEQr2")
-          .update({ sessions: FieldValue.arrayUnion(dateTimeString) });
-      }
+      
+      await userCollection
+        .doc("rZ7xk6kWgXcSjtFZ5BVr401bEQr2")
+        .update({ sessions: FieldValue.arrayUnion(dateTimeString) });
+      
       var everyday=false;
       last_two_dates_array=[];
       const d1 = userCollection.doc(unique_code);
