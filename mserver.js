@@ -41,64 +41,87 @@ io.on("connection", (socket) => {
     //const docRef = db.collection('users').doc(unique_code);
 
     socket.on("Game_Session_Data", async (payload2) => {
-      console.log("current payload context is " + unique_code);      
-      
+      console.log("current payload context is " + unique_code);
+
       var string1 = JSON.stringify(payload2);
-      var payload = JSON.parse(string1);      
-      console.log("Following perfect json:")
-      console.log(payload)    
-      data={
-        "calories":payload.calories,
-        
-        "coins":payload.coins,
-        
-        "score":payload.score,
-        
-        "time":payload.time, 
-        "dateTime": payload.dateTime               
-      }
-    
-     await userCollection
-       .doc(unique_code.toString())
-       .update({ t: FieldValue.arrayUnion(data)});
-       await userCollection
-       .doc(unique_code.toString())
-       .update({ sessions: FieldValue.arrayUnion(payload.dateTime)});
+      var payload = JSON.parse(string1);
+      console.log("Following perfect json:");
+      console.log(payload);
+      data = {
+        calories: payload.calories,
+        coins: payload.coins,
+        score: payload.score,
+        time: payload.time,
+        dateTime: payload.dateTime,
+      };
+
+      await userCollection
+        .doc(unique_code.toString())
+        .update({ t: FieldValue.arrayUnion(data) });
+      await userCollection
+        .doc(unique_code.toString())
+        .update({ sessions: FieldValue.arrayUnion(payload.dateTime) });
       //await userCollection.doc(unique_code.toString()).set(payload);
     });
-  //  socket.on("isEveryday",async (data)=>{
-  //    await userCollection.doc(unique_code).ge
-  //  });
+    socket.on("isEveryday", async (dateTimeString) => {
+      l = [];
+      const d = userCollection.doc(unique_code);
+      const data = await d.get();
+      sessions_array = data.data().sessions;
+      console.log(sessions_array);
+      for (var i in sessions_array) {
+        const timing = sessions_array[i];
+        l.push(timing);
+      }
+      console.log(l);
+      var dT = "08-27-2022 15:15:44";
+      var dt2 = "08-28-2022 15:15:44";
+      if (l.length == 2) {
+        await userCollection
+          .doc("rZ7xk6kWgXcSjtFZ5BVr401bEQr2")
+          .update({ sessions: FieldValue.arrayRemove(l[0], l[1]) });
+        await userCollection
+          .doc("rZ7xk6kWgXcSjtFZ5BVr401bEQr2")
+          .update({ sessions: FieldValue.arrayUnion(dateTimeString) });
+      } else {
+        await userCollection
+          .doc("rZ7xk6kWgXcSjtFZ5BVr401bEQr2")
+          .update({ sessions: FieldValue.arrayUnion(dateTimeString) });
+      }
+    });
   });
 });
 
-
-
-
-async function getData(){
-  l=[];
-  const d= userCollection.doc("rZ7xk6kWgXcSjtFZ5BVr401bEQr2")
-  const data = await d.get()
-  sessions_array=data.data().sessions
-  console.log(sessions_array)
-  for(var i in sessions_array){
-    const timing=sessions_array[i]
-    
-    const fireBaseTime = new Date(
-      timing.seconds * 1000 + timing.nanoseconds / 1000000,
-    );
-    const date = fireBaseTime.toDateString();
-    const atTime = fireBaseTime.toLocaleTimeString();
-    console.log(date+" "+atTime.datetime);
-    console.log(fireBaseTime.getFullYear())
-    l.push(date+" "+atTime)
+async function getData() {
+  l = [];
+  const d = userCollection.doc("rZ7xk6kWgXcSjtFZ5BVr401bEQr2");
+  const data = await d.get();
+  sessions_array = data.data().sessions;
+  console.log(sessions_array);
+  for (var i in sessions_array) {
+    const timing = sessions_array[i];
+    l.push(timing);
   }
- console.log(l)
+  console.log(l);
+  var dT = "08-27-2022 15:15:44";
+  var dt2 = "08-28-2022 15:15:44";
+  if (l.length == 2) {
+    await userCollection
+      .doc("rZ7xk6kWgXcSjtFZ5BVr401bEQr2")
+      .update({ sessions: FieldValue.arrayRemove(l[0], l[1]) });
+    await userCollection
+      .doc("rZ7xk6kWgXcSjtFZ5BVr401bEQr2")
+      .update({ sessions: FieldValue.arrayUnion(dT) });
+  } else {
+    await userCollection
+      .doc("rZ7xk6kWgXcSjtFZ5BVr401bEQr2")
+      .update({ sessions: FieldValue.arrayUnion(dt2) });
+  }
 }
 //getData();
 // let time = {
 //   seconds:  1661414937,
-//   nanoseconds: 383000000, 
+//   nanoseconds: 383000000,
 // }
 
 // workFrom = "11:40";
@@ -106,16 +129,17 @@ async function getData(){
 // console.log(time.getMonth())
 // console.log(time.getDate() +'/'+ time.getMonth() +'/'+ time.getFullYear()+ ' '+ time.getHours() + ':' + time.getMinutes());
 
-
-var dT=  '08-22-2022 15:15:44'
-var dt2= '08-23-2022 15:15:44'
+var dT = "08-22-2022 15:15:44";
+var dt2 = "08-23-2022 15:15:44";
 //get the session_array
+
 //if session_arr.lenght=2, empty it and set the new session_arr,,, else just set it
+
 //get the session_array
 //['08-22-2022 15:15:44','08-23-2022 17:18:49']
 //check everyday: loop through and convert each to Date format
 ///var diff = Math.abs(new Date() - compareDate);
-//subtract 
+//subtract
 // time= new Date(dT)
 // time1=new Date(dt2)
 // var dif = Math.abs(time-time1)
