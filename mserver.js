@@ -88,6 +88,25 @@ io.on("connection", (socket) => {
           .doc("rZ7xk6kWgXcSjtFZ5BVr401bEQr2")
           .update({ sessions: FieldValue.arrayUnion(dateTimeString) });
       }
+      var everyday=false;
+      last_two_dates_array=[];
+      const d1 = userCollection.doc(unique_code);
+      const data1 = await d.get();
+      sessions_array = data1.data().sessions;
+      last_two_dates_array=sessions_array.slice(-2)
+      var t1= new Date(last_two_dates_array[0])
+      var t2=new Date(last_two_dates_array[1])
+      console.log(t1+" and "+ t2)
+      var dif = Math.abs(t1-t2)
+      hours_diff= dif/ 3600000
+      if(hours_diff<24){
+        everyday=true;
+      }else{
+        everyday=false;
+      }
+      await userCollection
+      .doc("rZ7xk6kWgXcSjtFZ5BVr401bEQr2")
+      .update({everyday_activity: everyday})
     });
   });
 });
@@ -146,3 +165,10 @@ var dt2 = "08-23-2022 15:15:44";
 // console.log(dif/ 3600000)
 
 //console.log(time.getDate() +'/'+ time.getMonth() +'/'+ time.getFullYear()+ ' '+ time.getHours() + ':' + time.getMinutes());
+// const arr = ['a', 'b', 'c', 'd', 'e'];
+
+// const last3 = arr.slice(-3); // 👉️ ['c', 'd', 'e']
+// console.log(last3);
+
+// const last2 = arr.slice(-2); // 👉️ ['d', 'e']
+// console.log(last2);
