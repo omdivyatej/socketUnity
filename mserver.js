@@ -41,61 +41,59 @@ io.on("connection", (socket) => {
     //const docRef = db.collection('users').doc(unique_code);
 
     socket.on("Game_Session_Data", async (payload2) => {
-      console.log("current payload context is " + unique_code);
-      //console.log(payload);
-      //console.log(typeof payload);
+      console.log("current payload context is " + unique_code);      
       var string1 = JSON.stringify(payload2);
-      var payload = JSON.parse(string1);
-      // var payload1={ calories: 45, score: 34, time: 3221, coins: 66 }
-      // const result = Object.entries(payload1);
-      data={
-        "calories":payload.calories,
+      var payload = JSON.parse(string1);      
+      console.log(payload)
+      // data={
+      //   "calories":payload.calories,
         
-        "coins":payload.coins,
+      //   "coins":payload.coins,
         
-        "score":payload.score,
+      //   "score":payload.score,
         
-        "time":payload.time,
-        
-      }
-      console.log( result)
-      await userCollection
-        .doc(unique_code.toString())
-        .update({ t: FieldValue.arrayUnion(data)});
+      //   "time":payload.time, 
+               
+      // }
+      // console.log( result)
+      // await userCollection
+      //   .doc(unique_code.toString())
+      //   .update({ t: FieldValue.arrayUnion(data)});
       //await userCollection.doc(unique_code.toString()).set(payload);
     });
+    // socket.on("isEveryday",async (data)=>{
+    //   await userCollection.doc(unique_code).ge
+    // });
   });
 });
 
-// var payload1={ calories: 45, score: 34, time: 3221, coins: 66 }
-// console.log(JSON.parse(payload1))
-// var k = new Map(JSON.parse(JSON.stringify(payload1)))
-// console.log(k)
-// var map = {};
-//       for (var value in payload1) {
-//         map.(value, payload1[value]);
-//       }
-// print(map)
-// const map = new Map([
-//   ['name', 'Tom'],
-//   ['country', 'Chile'],
-// ]);
 
-// // ✅ Convert to JSON string
-// const json = JSON.stringify(Object.fromEntries(map));
 
-// // 👇️ '{"name": "Tom", "country": "Chile"}'
-// console.log(json);
 
-// let jsonObject = { one: "value1", "two": "value2", "three": "value3" };  
+async function getData(){
+  l=[];
+  const d= userCollection.doc("rZ7xk6kWgXcSjtFZ5BVr401bEQr2")
+  const data = await d.get()
+  sessions_array=data.data().sessions
+  console.log(sessions_array)
+  for(var i in sessions_array){
+    const timing=sessions_array[i]
+    
+    const fireBaseTime = new Date(
+      timing.seconds * 1000 + timing.nanoseconds / 1000000,
+    );
+    const date = fireBaseTime.toDateString();
+    const atTime = fireBaseTime.toLocaleTimeString();
+    console.log(date+" "+atTime.datetime);
+    console.log(fireBaseTime.getFullYear())
+    l.push(date+" "+atTime)
+  }
+ console.log(l)
+}
+//getData();
+let time = {
+  seconds:  1661414937,
+  nanoseconds: 383000000, 
+}
 
-// const result = Object.entries(jsonObject);
-
-// console.log( result)
-
-var payload1={ calories: 45, score: 34, time: 3221, coins: 66 }
-console.log(payload1.calories)
-      const result = Object.entries(payload1);
-
-      console.log(result)
 
