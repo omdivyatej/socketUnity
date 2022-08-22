@@ -61,6 +61,9 @@ io.on("connection", (socket) => {
      await userCollection
        .doc(unique_code.toString())
        .update({ t: FieldValue.arrayUnion(data)});
+       await userCollection
+       .doc(unique_code.toString())
+       .update({ sessions: FieldValue.arrayUnion(payload.dateTime)});
       //await userCollection.doc(unique_code.toString()).set(payload);
     });
   //  socket.on("isEveryday",async (data)=>{
