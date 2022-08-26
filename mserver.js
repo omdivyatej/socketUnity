@@ -42,7 +42,7 @@ io.on("connection", (socket) => {
 
     socket.on("Game_Session_Data", async (payload2) => {
       console.log("current payload context is " + unique_code);
-
+      console.log(payload2)
       var string1 = JSON.stringify(payload2);
       var payload = JSON.parse(string1);
       console.log("Following perfect json:");
