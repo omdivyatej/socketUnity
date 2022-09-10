@@ -33,8 +33,9 @@ const userCollection = db.collection("users");
 console.log("Starting Socket.IO demo server");
 
 io.on("connection", (socket) => {
-  console.log("Game Connected");
+  console.log("Game Connected Successfully!");
   socket.on("unique_code", async (data) => {
+    console.log(data);
     const unique_code = data;
     console.log("Hello");
     console.log("Unique code is " + unique_code);
