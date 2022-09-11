@@ -77,7 +77,7 @@ io.on("connection", (socket) => {
       await userCollection
         .doc(unique_code.toString())
         .update({ sessions: FieldValue.arrayUnion(payload.dateTime) });
-     // await userCollection.doc(unique_code.toString()).set(payload);
+     
     });
     socket.on("isEveryday", async (dateTimeString) => {
       l = [];
@@ -93,9 +93,9 @@ io.on("connection", (socket) => {
       var dT = "08-27-2022 15:15:44";
       var dt2 = "08-28-2022 15:15:44";
 
-      await userCollection
-        .doc("rZ7xk6kWgXcSjtFZ5BVr401bEQr2")
-        .update({ sessions: FieldValue.arrayUnion(dateTimeString) });
+      // await userCollection
+      //   .doc("rZ7xk6kWgXcSjtFZ5BVr401bEQr2")
+      //   .update({ sessions: FieldValue.arrayUnion(dateTimeString) });
 
       var everyday = false;
       last_two_dates_array = [];
@@ -114,7 +114,7 @@ io.on("connection", (socket) => {
         everyday = false;
       }
       await userCollection
-        .doc("rZ7xk6kWgXcSjtFZ5BVr401bEQr2")
+        .doc(unique_code)
         .update({ everyday_activity: everyday });
     });
   });
