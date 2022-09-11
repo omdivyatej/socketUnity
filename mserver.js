@@ -43,26 +43,37 @@ io.on("connection", (socket) => {
 
     socket.on("Game_Session_Data", async (payload2) => {
       console.log("current payload context is " + unique_code);
-      console.log(payload2)
+      console.log(payload2);
       var string1 = JSON.stringify(payload2);
       var payload = JSON.parse(string1);
       console.log("Following perfect json:");
       console.log(payload);
-      // data = {
-      //   calories: payload.calories,
-      //   coins: payload.coins,
-      //   score: payload.score,
-      //   time: payload.time,
-      //   dateTime: payload.dateTime,
-      // };
 
-      // await userCollection
-      //   .doc(unique_code.toString())
-      //   .update({ t: FieldValue.arrayUnion(data) });
-      // await userCollection
-      //   .doc(unique_code.toString())
-      //   .update({ sessions: FieldValue.arrayUnion(payload.dateTime) });
-      //await userCollection.doc(unique_code.toString()).set(payload);
+      const d = userCollection.doc(unique_code);
+      const data = await d.get();
+      console.log("received data "+data)
+      const weight = data.data().weight;
+      console.log("weight: "+weight)
+      const METrunning=8.3;
+      const activityTime=payload.time;
+      var calories_burnt= calculateCalories(weight,METrunning,activityTime)
+      console.log(calories_burnt)
+
+      data = {
+        calories: calories_burnt,
+        coins: payload.coins,
+        score: payload.score,
+        time: payload.time,
+        dateTime: payload.dateTime,
+      };
+
+      await userCollection
+        .doc(unique_code.toString())
+        .update({ t: FieldValue.arrayUnion(data) });
+      await userCollection
+        .doc(unique_code.toString())
+        .update({ sessions: FieldValue.arrayUnion(payload.dateTime) });
+      await userCollection.doc(unique_code.toString()).set(payload);
     });
     socket.on("isEveryday", async (dateTimeString) => {
       l = [];
@@ -77,34 +88,36 @@ io.on("connection", (socket) => {
       console.log(l);
       var dT = "08-27-2022 15:15:44";
       var dt2 = "08-28-2022 15:15:44";
-      
+
       await userCollection
         .doc("rZ7xk6kWgXcSjtFZ5BVr401bEQr2")
         .update({ sessions: FieldValue.arrayUnion(dateTimeString) });
-      
-      var everyday=false;
-      last_two_dates_array=[];
+
+      var everyday = false;
+      last_two_dates_array = [];
       const d1 = userCollection.doc(unique_code);
       const data1 = await d.get();
       sessions_array = data1.data().sessions;
-      last_two_dates_array=sessions_array.slice(-2)
-      var t1= new Date(last_two_dates_array[0])
-      var t2=new Date(last_two_dates_array[1])
-      console.log(t1+" and "+ t2)
-      var dif = Math.abs(t1-t2)
-      hours_diff= dif/ 3600000
-      if(hours_diff<24){
-        everyday=true;
-      }else{
-        everyday=false;
+      last_two_dates_array = sessions_array.slice(-2);
+      var t1 = new Date(last_two_dates_array[0]);
+      var t2 = new Date(last_two_dates_array[1]);
+      console.log(t1 + " and " + t2);
+      var dif = Math.abs(t1 - t2);
+      hours_diff = dif / 3600000;
+      if (hours_diff < 24) {
+        everyday = true;
+      } else {
+        everyday = false;
       }
       await userCollection
-      .doc("rZ7xk6kWgXcSjtFZ5BVr401bEQr2")
-      .update({everyday_activity: everyday})
+        .doc("rZ7xk6kWgXcSjtFZ5BVr401bEQr2")
+        .update({ everyday_activity: everyday });
     });
   });
 });
-
+function calculateCalories(weight, MET, timeinMinutes) {
+  return (weight * MET * timeinMinutes * 3.5) / 200;
+}
 async function getData() {
   l = [];
   const d = userCollection.doc("rZ7xk6kWgXcSjtFZ5BVr401bEQr2");
