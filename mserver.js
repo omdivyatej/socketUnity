@@ -48,20 +48,20 @@ io.on("connection", (socket) => {
       var payload = JSON.parse(string1);
       console.log("Following perfect json:");
       console.log(payload);
-      data = {
-        calories: payload.calories,
-        coins: payload.coins,
-        score: payload.score,
-        time: payload.time,
-        dateTime: payload.dateTime,
-      };
+      // data = {
+      //   calories: payload.calories,
+      //   coins: payload.coins,
+      //   score: payload.score,
+      //   time: payload.time,
+      //   dateTime: payload.dateTime,
+      // };
 
-      await userCollection
-        .doc(unique_code.toString())
-        .update({ t: FieldValue.arrayUnion(data) });
-      await userCollection
-        .doc(unique_code.toString())
-        .update({ sessions: FieldValue.arrayUnion(payload.dateTime) });
+      // await userCollection
+      //   .doc(unique_code.toString())
+      //   .update({ t: FieldValue.arrayUnion(data) });
+      // await userCollection
+      //   .doc(unique_code.toString())
+      //   .update({ sessions: FieldValue.arrayUnion(payload.dateTime) });
       //await userCollection.doc(unique_code.toString()).set(payload);
     });
     socket.on("isEveryday", async (dateTimeString) => {
