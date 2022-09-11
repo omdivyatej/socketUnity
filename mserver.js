@@ -50,7 +50,7 @@ io.on("connection", (socket) => {
       console.log(payload);
 
       const d = userCollection.doc(unique_code);
-      const data = await d.get();
+      var data = await d.get();
       console.log("received data "+data)
       const weight = data.data().weight;
       console.log("weight: "+weight)
