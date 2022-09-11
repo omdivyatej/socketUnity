@@ -56,6 +56,8 @@ io.on("connection", (socket) => {
       console.log("weight: "+weight)
       const METrunning=8.3;
       const activityTime=payload.time;
+      const activityTimeinMinutes=activityTime/60;
+      console.log(activityTimeinMinutes)
       var calories_burnt= calculateCalories(weight,METrunning,activityTime)
       console.log(calories_burnt)
 
@@ -64,12 +66,14 @@ io.on("connection", (socket) => {
         coins: payload.coins,
         score: payload.score,
         time: payload.time,
-        dateTime: payload.dateTime,
+        session_time: payload.dateTime,
       };
+      console.log("Data that is being sent to firestore")
+      console.log(data)
 
       await userCollection
         .doc(unique_code.toString())
-        .update({ t: FieldValue.arrayUnion(data) });
+        .update({ game_sessions: FieldValue.arrayUnion(data) });
       await userCollection
         .doc(unique_code.toString())
         .update({ sessions: FieldValue.arrayUnion(payload.dateTime) });
