@@ -58,7 +58,7 @@ io.on("connection", (socket) => {
       const activityTime=payload.time;
       const activityTimeinMinutes=activityTime/60;
       console.log(activityTimeinMinutes)
-      var calories_burnt= calculateCalories(weight,METrunning,activityTime)
+      var calories_burnt= calculateCalories(weight,METrunning,activityTimeinMinutes)
       console.log(calories_burnt)
 
       data = {
