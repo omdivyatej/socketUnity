@@ -50,17 +50,22 @@ async function getIdFromSecretCode(secret_code) {
 
 io.on("connection", (socket) => {
   console.log("Game Connected Successfully!");
+
   socket.on("unique_code", async (data) => {
     console.log(data);
     const unique_code = data;
     console.log("Hello");
     console.log("Unique code is " + unique_code);
+
     // Check code validity
     const p= userCollection.where("secret_code", "==", unique_code);
     var dataSecretCode= await p.get();
     console.log("Matching document is:")
     var k = dataSecretCode.docs[0].id
     console.log(k)
+    if(dataSecretCode.docs.length==0){
+      socket.emit("validation", 0)
+    }
 
 
     socket.on("Game_Session_Data", async (payload2) => {
