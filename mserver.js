@@ -56,7 +56,7 @@ io.on("connection", (socket) => {
     console.log("Hello");
     console.log("Unique code is " + unique_code);
     // Check code validity
-    const p= userCollection.where("secret_code", "==", secret_code);
+    const p= userCollection.where("secret_code", "==", unique_code);
     var dataSecretCode= await p.get();
     console.log("Matching document is:")
     console.log(dataSecretCode.docs[0].id)
