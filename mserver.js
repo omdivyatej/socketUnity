@@ -60,11 +60,13 @@ io.on("connection", (socket) => {
     // Check code validity
     const p= userCollection.where("secret_code", "==", unique_code);
     var dataSecretCode= await p.get();
-    console.log("Matching document is:")
-    var k = dataSecretCode.docs[0].id
-    console.log("Length of the doc is " + dataSecretCode.docs.length)
+    
+    
     if(dataSecretCode.docs.length==0){
       socket.emit("validation", 0)
+    }else{
+      var k = dataSecretCode.docs[0].id
+      console.log("Length of the doc is " + dataSecretCode.docs.length +" and doc  is "+k);
     }
 
 
