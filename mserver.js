@@ -30,7 +30,23 @@ initializeApp({
 const db = getFirestore();
 const userCollection = db.collection("users");
 
-console.log("Starting Socket.IO demo server");
+async function getIdFromSecretCode(secret_code) {
+  doc_id=0
+  await userCollection
+    .where("secret_code", "==", secret_code)
+    .get()
+    .then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        // doc.data() is never undefined for query doc snapshots
+
+        doc_id = doc.id;
+        // console.log(doc_id);
+        //console.log(doc.id, " => ", doc.data());
+      });
+    });
+  return doc_id;
+}
+//////////////////////////////// Socket connection//////////////////////////////////////////////////////
 
 io.on("connection", (socket) => {
   console.log("Game Connected Successfully!");
@@ -39,7 +55,12 @@ io.on("connection", (socket) => {
     const unique_code = data;
     console.log("Hello");
     console.log("Unique code is " + unique_code);
-    //const docRef = db.collection('users').doc(unique_code);
+    // Check code validity
+    const p= userCollection.where("secret_code", "==", secret_code);
+    var dataSecretCode= await p.get();
+    console.log("Matching document is:")
+    console.log(dataSecretCode.docs[0].id)
+
 
     socket.on("Game_Session_Data", async (payload2) => {
       console.log("current payload context is " + unique_code);
@@ -51,15 +72,19 @@ io.on("connection", (socket) => {
 
       const d = userCollection.doc(unique_code);
       var data = await d.get();
-      console.log("received data "+data)
+      console.log("received data " + data);
       const weight = data.data().weight;
-      console.log("weight: "+weight)
-      const METrunning=8.3;
-      const activityTime=payload.time;
-      const activityTimeinMinutes=activityTime/60;
-      console.log(activityTimeinMinutes)
-      var calories_burnt= calculateCalories(weight,METrunning,activityTimeinMinutes)
-      console.log(calories_burnt)
+      console.log("weight: " + weight);
+      const METrunning = 8.3;
+      const activityTime = payload.time;
+      const activityTimeinMinutes = activityTime / 60;
+      console.log(activityTimeinMinutes);
+      var calories_burnt = calculateCalories(
+        weight,
+        METrunning,
+        activityTimeinMinutes
+      );
+      console.log(calories_burnt);
 
       data = {
         calories: calories_burnt,
@@ -68,8 +93,8 @@ io.on("connection", (socket) => {
         time: payload.time,
         session_time: payload.dateTime,
       };
-      console.log("Data that is being sent to firestore")
-      console.log(data)
+      console.log("Data that is being sent to firestore");
+      console.log(data);
 
       await userCollection
         .doc(unique_code.toString())
@@ -77,7 +102,6 @@ io.on("connection", (socket) => {
       await userCollection
         .doc(unique_code.toString())
         .update({ sessions: FieldValue.arrayUnion(payload.dateTime) });
-     
     });
     socket.on("isEveryday", async (dateTimeString) => {
       l = [];
@@ -122,6 +146,12 @@ io.on("connection", (socket) => {
 function calculateCalories(weight, MET, timeinMinutes) {
   return (weight * MET * timeinMinutes * 3.5) / 200;
 }
+async function getBasicData() {
+  const d = userCollection.doc("X71DxGd7TgaZCrTlb9xO8tywBsB2");
+  const data = await d.get();
+  sessions_array = data.data().sessions;
+  console.log(sessions_array);
+}
 async function getData() {
   l = [];
   const d = userCollection.doc("rZ7xk6kWgXcSjtFZ5BVr401bEQr2");
@@ -148,38 +178,9 @@ async function getData() {
       .update({ sessions: FieldValue.arrayUnion(dt2) });
   }
 }
-//getData();
-// let time = {
-//   seconds:  1661414937,
-//   nanoseconds: 383000000,
-// }
 
-// workFrom = "11:40";
-// time = new Date("1/02/1970" + " " + workFrom);
-// console.log(time.getMonth())
-// console.log(time.getDate() +'/'+ time.getMonth() +'/'+ time.getFullYear()+ ' '+ time.getHours() + ':' + time.getMinutes());
 
-var dT = "08-22-2022 15:15:44";
-var dt2 = "08-23-2022 15:15:44";
-//get the session_array
 
-//if session_arr.lenght=2, empty it and set the new session_arr,,, else just set it
 
-//get the session_array
-//['08-22-2022 15:15:44','08-23-2022 17:18:49']
-//check everyday: loop through and convert each to Date format
-///var diff = Math.abs(new Date() - compareDate);
-//subtract
-// time= new Date(dT)
-// time1=new Date(dt2)
-// var dif = Math.abs(time-time1)
-// console.log(dif/ 3600000)
 
-//console.log(time.getDate() +'/'+ time.getMonth() +'/'+ time.getFullYear()+ ' '+ time.getHours() + ':' + time.getMinutes());
-// const arr = ['a', 'b', 'c', 'd', 'e'];
 
-// const last3 = arr.slice(-3); // 👉️ ['c', 'd', 'e']
-// console.log(last3);
-
-// const last2 = arr.slice(-2); // 👉️ ['d', 'e']
-// console.log(last2);
