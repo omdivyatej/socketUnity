@@ -62,7 +62,7 @@ io.on("connection", (socket) => {
     var dataSecretCode= await p.get();
     console.log("Matching document is:")
     var k = dataSecretCode.docs[0].id
-    console.log(k)
+    console.log("Length of the doc is " + dataSecretCode.docs.length)
     if(dataSecretCode.docs.length==0){
       socket.emit("validation", 0)
     }
