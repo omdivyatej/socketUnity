@@ -59,7 +59,8 @@ io.on("connection", (socket) => {
     const p= userCollection.where("secret_code", "==", unique_code);
     var dataSecretCode= await p.get();
     console.log("Matching document is:")
-    console.log(dataSecretCode.docs[0].id)
+    var k = dataSecretCode.docs[0].id
+    console.log(k)
 
 
     socket.on("Game_Session_Data", async (payload2) => {
