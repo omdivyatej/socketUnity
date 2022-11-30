@@ -65,6 +65,7 @@ io.on("connection", (socket) => {
     if(dataSecretCode.docs.length==0){
       socket.emit("validation", 0)
     }else{
+      socket.emit("validation",1)
       var k = dataSecretCode.docs[0].id
       console.log("Length of the doc is " + dataSecretCode.docs.length +" and doc  is "+k);
     }
