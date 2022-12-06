@@ -61,25 +61,27 @@ io.on("connection", (socket) => {
     const p= userCollection.where("secret_code", "==", unique_code);
     var dataSecretCode= await p.get();
     
-    
+    var k;
     if(dataSecretCode.docs.length==0){
       socket.emit("validation", 0)
     }else{
       socket.emit("validation",1)
-      var k = dataSecretCode.docs[0].id
+      k = dataSecretCode.docs[0].id
       console.log("Length of the doc is " + dataSecretCode.docs.length +" and doc  is "+k);
     }
 
 
+
     socket.on("Game_Session_Data", async (payload2) => {
-      console.log("current payload context is " + unique_code);
+      console.log("current payload context is " + k);
       console.log(payload2);
       var string1 = JSON.stringify(payload2);
       var payload = JSON.parse(string1);
       console.log("Following perfect json:");
       console.log(payload);
-
-      const d = userCollection.doc(unique_code);
+      console.log("Updating doc: " +k)
+      unique_code=k
+      const d = userCollection.doc(k);
       var data = await d.get();
       console.log("received data " + data);
       const weight = data.data().weight;
